@@ -68,12 +68,15 @@ class _TodoListPageState extends State<TodoListPage> {
                           controlAffinity: ListTileControlAffinity.leading,
                           value: filteredTodos[index].done,
                           onChanged: (value) {
-                            final checked = value ?? false;
-                            setState(() {
-                              _todos[_todos.indexOf(filteredTodos[index])] = filteredTodos[index].copyWith(
-                                done: checked,
-                              );
-                            });
+                            // final checked = value ?? false;
+                            // setState(() {
+                            //   _todos[_todos.indexOf(filteredTodos[index])] = filteredTodos[index].copyWith(
+                            //     done: checked,
+                            //   );
+                            // });
+
+                            _editTodo(context, filteredTodos[index]);
+
                           },
                           title: Text(filteredTodos[index].text),
                         );
@@ -107,6 +110,22 @@ class _TodoListPageState extends State<TodoListPage> {
           _todos.add(
             result,
           );
+        },
+      );
+    }
+  }
+
+
+  Future<void> _editTodo(BuildContext context, TodoModel? todoModel) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AddTodo(todoModel: todoModel)),
+    );
+    if (!mounted) return;
+    if (result != null) {
+      setState(
+            () {
+              _todos[_todos.indexOf(todoModel!)] = result;
         },
       );
     }

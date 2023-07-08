@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:todo_list/models/todo_model.dart';
 
 class AddTodo extends StatefulWidget {
-  const AddTodo({super.key});
+  final TodoModel? todoModel;
+
+  const AddTodo({Key? key, this.todoModel}) : super(key: key);
 
   @override
   State<AddTodo> createState() => _AddTodo();
@@ -10,6 +12,17 @@ class AddTodo extends StatefulWidget {
 class _AddTodo extends State<AddTodo> {
 
   final myController = TextEditingController();
+  DateTime? dateTime;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Проверяем, есть ли todoModel и его текст
+    if (widget.todoModel != null) {
+      myController.text = widget.todoModel!.text;
+    }
+  }
 
   @override
   void dispose() {
@@ -37,6 +50,7 @@ class _AddTodo extends State<AddTodo> {
                       onPressed: () {
                         Navigator.pop(context, TodoModel(
                           text: myController.text,
+                          deadline: dateTime,
                         ),);
                       },
                       child: const Text('СОХРАНИТЬ'),
@@ -64,8 +78,25 @@ class _AddTodo extends State<AddTodo> {
                     ),
                     maxLines: 5,
                     controller: myController,
+
                   ),
-                )
+                ),
+                OutlinedButton(
+                  onPressed: () async {
+                    final res = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime.now().add(const Duration(days: 10)),
+                    );
+
+                    setState(() {
+                      dateTime = res;
+                      //_number = res?.day ?? 0;
+                    });
+                  },
+                  child: const Text('Pick number'),
+                ),
               ]
           ),
         )
