@@ -22,6 +22,14 @@ class TodoApp extends StatelessWidget {
             height: 32 / 24,
             fontWeight: FontWeight.bold,
           ),
+          bodyLarge: GoogleFonts.montserrat(
+            fontSize: 16,
+            height: 20 / 16,
+          ),
+          bodyMedium: GoogleFonts.montserrat(
+            fontSize: 14,
+            height: 20 / 14,
+          ),
         ),
       ),
       home: const TodoListPage(),

@@ -21,6 +21,7 @@ class _AddTodo extends State<AddTodo> {
     // Проверяем, есть ли todoModel и его текст
     if (widget.todoModel != null) {
       myController.text = widget.todoModel!.text;
+      dateTime = widget.todoModel!.deadline;
     }
   }
 
@@ -32,7 +33,6 @@ class _AddTodo extends State<AddTodo> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         body: SafeArea(
           child : Column(
@@ -49,15 +49,15 @@ class _AddTodo extends State<AddTodo> {
                     TextButton(
                       onPressed: () {
                         Navigator.pop(context, TodoModel(
-                          text: myController.text,
+                          text: myController.text ?? '',
                           deadline: dateTime,
                         ),);
                       },
-                      child: const Text('СОХРАНИТЬ'),
+                      child: Text('СОХРАНИТЬ'),
                     )
                   ],
                 ),
-                Card(
+                 Card(
                   margin: const EdgeInsets.symmetric(
                     horizontal: 17,
                     vertical: 5,
@@ -68,35 +68,66 @@ class _AddTodo extends State<AddTodo> {
                         20,
                       ),
                     ),
+                    side: BorderSide(
+                      color: Colors.white, // Белый цвет рамки
+                      //width: 1.0,
+                    ),
                   ),
+                  elevation: 5,
                   child: TextField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20), // Закругление полей
+                      ),
                       filled: true,
                       fillColor: Colors.white,
-                      hintText: "Здесь будут мои заметки",
+                      //hintText: "Здесь будут мои заметки",
                     ),
                     maxLines: 5,
                     controller: myController,
 
                   ),
                 ),
-                OutlinedButton(
-                  onPressed: () async {
-                    final res = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime.now().add(const Duration(days: 10)),
-                    );
+                 CheckboxListTile(
+                              controlAffinity: ListTileControlAffinity.trailing,
+                              value: dateTime != null,
+                              onChanged: (value) async {
+                                final res = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime.now(),
+                                  lastDate: DateTime.now().add(const Duration(days: 10)),
+                                );
+                                setState(() {
+                                  dateTime = res;
+                                });
+                              },
+                        title: dateTime == null
+                     ? const Text( 'Дедлайн')
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                            const Text( 'Дедлайн'),
+                            Text('${dateTime!.day}.${dateTime!.month}.${dateTime!.year}'),
+          ],
+        )
 
-                    setState(() {
-                      dateTime = res;
-                      //_number = res?.day ?? 0;
-                    });
-                  },
-                  child: const Text('Pick number'),
-                ),
+                        ),
+                widget.todoModel != null ?
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Row(
+                        children: [
+                          Icon(Icons.delete_outline, color: Colors.red),
+                          Text(' Удалить' , style: TextStyle(
+                            color: Colors.red,
+                          ),),
+                        ],
+                      ))
+                    :
+                    Container(),
               ]
           ),
         )

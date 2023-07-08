@@ -29,13 +29,12 @@ class _TodoListPageState extends State<TodoListPage> {
 
       body: SafeArea(
         top: false,
-
         child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Выполнено - ${_todos.where((element) => element.done).length}'),
+                  Text('Выполнено - ${_todos.where((element) => element.done).length}', style: themeData.textTheme.bodyLarge?.copyWith()),
                   TextButton(
                     onPressed: () {
                       setState(() {
@@ -48,6 +47,7 @@ class _TodoListPageState extends State<TodoListPage> {
               ),
               Expanded(
                 child: Card(
+
                   margin: const EdgeInsets.symmetric(
                     horizontal: 17,
                     vertical: 5,
@@ -60,25 +60,74 @@ class _TodoListPageState extends State<TodoListPage> {
                     ),
                   ),
                   elevation: 5,
+                  color: Colors.white,
                   child: ListView.builder(
                       itemCount: isVisible ? _todos.length : _todos.where((element) => !element.done).toList().length,
                       itemBuilder: (context, index) {
                         final filteredTodos = isVisible ? _todos : _todos.where((element) => !element.done).toList();
-                        return CheckboxListTile(
+                        return Dismissible(
+                            background: Container(
+                            color: Colors.green,
+                              child: const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Icon(Icons.check),
+                              ),
+                            ),
+                            secondaryBackground: Container(
+                              color: Colors.red,
+                              child: const Align(
+                                alignment: Alignment.centerRight,
+                                child: Icon(Icons.delete),
+                              ),
+                            ),
+                            key: ValueKey<TodoModel>(filteredTodos[index]),
+                            onDismissed: (DismissDirection direction){
+                                setState(() {
+                                  _todos.removeAt(_todos.indexOf(filteredTodos[index]));
+                                });
+                            },
+                            child: CheckboxListTile(
+                              title: GestureDetector(
+                                onTap: () {
+                                  _editTodo(context, filteredTodos[index]);
+                                },
+                                child: filteredTodos[index].deadline == null
+                                    ? Text(filteredTodos[index].text,
+                                  //style: themeData.textTheme.bodyLarge?.copyWith(),
+                                  style: TextStyle(
+                                    decoration: filteredTodos[index].done ? TextDecoration.lineThrough : null,
+                                    color: filteredTodos[index].done ? Colors.grey : Colors.black,
+                                  ),
+                                )
+                                    : Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(filteredTodos[index].text,
+                                  style: TextStyle(
+                                    decoration: filteredTodos[index].done ? TextDecoration.lineThrough : null,
+                                    color: filteredTodos[index].done ? Colors.grey : Colors.black,
+                                  ),
+                                    ),
+                                    Text('${filteredTodos[index].deadline!.day}.${filteredTodos[index].deadline!.month}.${filteredTodos[index].deadline!.year}',
+                                      style: TextStyle(
+                                        decoration: filteredTodos[index].done ? TextDecoration.lineThrough : null,
+                                        color: filteredTodos[index].done ? Colors.grey : Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ),
                           controlAffinity: ListTileControlAffinity.leading,
                           value: filteredTodos[index].done,
                           onChanged: (value) {
-                            // final checked = value ?? false;
-                            // setState(() {
-                            //   _todos[_todos.indexOf(filteredTodos[index])] = filteredTodos[index].copyWith(
-                            //     done: checked,
-                            //   );
-                            // });
-
-                            _editTodo(context, filteredTodos[index]);
-
+                            final checked = value ?? false;
+                            setState(() {
+                              _todos[_todos.indexOf(filteredTodos[index])] = filteredTodos[index].copyWith(
+                                done: checked,
+                              );
+                            });
                           },
-                          title: Text(filteredTodos[index].text),
+                        )
                         );
                       }
                   ),
@@ -93,7 +142,11 @@ class _TodoListPageState extends State<TodoListPage> {
         onPressed: () {
           _addTodo(context);
         },
-        child: const Icon(Icons.add),
+          backgroundColor: Colors.orange,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(999),
+        ),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }
