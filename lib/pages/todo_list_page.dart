@@ -46,12 +46,6 @@ class _TodoListPageState extends State<TodoListPage> {
                 ],
               ),
 
-
-
-
-
-
-
     LayoutBuilder(
     builder: (context, constraints) {
       return Card(
@@ -178,13 +172,9 @@ class _TodoListPageState extends State<TodoListPage> {
     }
         ),
 
-
-
-
             ]
         ),
       ),
-
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {

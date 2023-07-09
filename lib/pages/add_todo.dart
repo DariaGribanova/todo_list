@@ -114,23 +114,30 @@ class _AddTodo extends State<AddTodo> {
         )
 
                         ),
+                //const Divider(color: Colors.black12,indent: 10, endIndent: 10),
                 widget.todoModel != null ?
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context, AddTodoResult(TodoModel(
-                          text: myController.text ?? '',
-                          deadline: dateTime,
-                        ), 'delete'));
-                        //Navigator.pop(context);
-                      },
-                      child: const Row(
-                        children: [
-                          Icon(Icons.delete_outline, color: Colors.red),
-                          Text(' Удалить' , style: TextStyle(
-                            color: Colors.red,
-                          ),),
-                        ],
-                      ))
+                Column(
+                  children: [
+                const Divider(color: Colors.black12,indent: 10, endIndent: 10),
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context, AddTodoResult(TodoModel(
+                        text: myController.text ?? '',
+                        deadline: dateTime,
+                      ), 'delete'));
+                      //Navigator.pop(context);
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.delete_outline, color: Colors.red),
+                        Text(' Удалить' , style: Theme
+                            .of(context)
+                            .textTheme.bodyLarge?.copyWith(color: Colors.red)),
+                      ],
+                    )
+                )
+                  ]
+                )
                     :
                     Container(),
               ]
