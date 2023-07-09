@@ -55,6 +55,7 @@ class _TodoListPageState extends State<TodoListPage> {
     LayoutBuilder(
     builder: (context, constraints) {
       return Card(
+        surfaceTintColor: Colors.white,
         margin: const EdgeInsets.symmetric(
           horizontal: 17,
           vertical: 5,
@@ -143,6 +144,8 @@ class _TodoListPageState extends State<TodoListPage> {
                                 .day}.${filteredTodos[index].deadline!
                                 .month}.${filteredTodos[index].deadline!.year}',
                               style: TextStyle(
+                                fontSize: 14,
+                                height: 20 / 14,
                                 decoration: filteredTodos[index].done!
                                     ? TextDecoration.lineThrough
                                     : null,

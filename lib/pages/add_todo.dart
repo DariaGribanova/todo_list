@@ -104,12 +104,12 @@ class _AddTodo extends State<AddTodo> {
                                 });
                               },
                         title: dateTime == null
-                     ? const Text( 'Дедлайн')
+                     ? Text( 'Дедлайн', style: Theme.of(context).textTheme.bodyLarge?.copyWith())
                         : Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                            const Text( 'Дедлайн'),
-                            Text('${dateTime!.day}.${dateTime!.month}.${dateTime!.year}'),
+                              Text( 'Дедлайн', style: Theme.of(context).textTheme.bodyLarge?.copyWith()),
+                            Text('${dateTime!.day}.${dateTime!.month}.${dateTime!.year}', style: Theme.of(context).textTheme.bodyMedium?.copyWith()),
           ],
         )
 
