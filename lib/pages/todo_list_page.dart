@@ -77,25 +77,37 @@ class _TodoListPageState extends State<TodoListPage> {
               final filteredTodos = isVisible ? _todos : _todos.where((
                   element) => !element.done).toList();
               return Dismissible(
+                direction: filteredTodos[index].done == true ? DismissDirection.endToStart : DismissDirection.horizontal,
                   background: Container(
                     color: Colors.green,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: const Align(
                       alignment: Alignment.centerLeft,
-                      child: Icon(Icons.check),
+                      child: Icon(Icons.check, color: Colors.white,),
                     ),
                   ),
                   secondaryBackground: Container(
                     color: Colors.red,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: const Align(
                       alignment: Alignment.centerRight,
-                      child: Icon(Icons.delete),
+                      child: Icon(Icons.delete, color: Colors.white),
                     ),
                   ),
                   key: ValueKey<TodoModel>(filteredTodos[index]),
                   onDismissed: (DismissDirection direction) {
-                    setState(() {
-                      _todos.removeAt(_todos.indexOf(filteredTodos[index]));
-                    });
+                    if (direction == DismissDirection.endToStart) {
+                      setState(() {
+                        _todos.removeAt(_todos.indexOf(filteredTodos[index]));
+                      });
+                    } else if (direction == DismissDirection.startToEnd){
+                      setState(() {
+                        _todos[_todos.indexOf(filteredTodos[index])] =
+                            filteredTodos[index].copyWith(
+                              done: true,
+                            );
+                      });
+                    }
                   },
                   child: CheckboxListTile(
                     title: GestureDetector(
