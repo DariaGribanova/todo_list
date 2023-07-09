@@ -18,7 +18,6 @@ class _AddTodo extends State<AddTodo> {
   void initState() {
     super.initState();
 
-    // Проверяем, есть ли todoModel и его текст
     if (widget.todoModel != null) {
       myController.text = widget.todoModel!.text;
       dateTime = widget.todoModel!.deadline;
@@ -51,7 +50,7 @@ class _AddTodo extends State<AddTodo> {
                         Navigator.pop(context, TodoModel(
                           text: myController.text ?? '',
                           deadline: dateTime,
-                        ),);
+                        ));
                       },
                       child: Text('СОХРАНИТЬ'),
                     )
@@ -69,15 +68,14 @@ class _AddTodo extends State<AddTodo> {
                       ),
                     ),
                     side: BorderSide(
-                      color: Colors.white, // Белый цвет рамки
-                      //width: 1.0,
+                      color: Colors.white,
                     ),
                   ),
                   elevation: 5,
                   child: TextField(
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20), // Закругление полей
+                        borderRadius: BorderRadius.circular(20),
                       ),
                       filled: true,
                       fillColor: Colors.white,
@@ -91,6 +89,7 @@ class _AddTodo extends State<AddTodo> {
                  CheckboxListTile(
                               controlAffinity: ListTileControlAffinity.trailing,
                               value: dateTime != null,
+                              activeColor: Colors.green,
                               onChanged: (value) async {
                                 final res = await showDatePicker(
                                   context: context,

@@ -45,94 +45,127 @@ class _TodoListPageState extends State<TodoListPage> {
                   )
                 ],
               ),
-              Expanded(
-                child: Card(
 
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 17,
-                    vertical: 5,
-                  ),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(
-                        20,
-                      ),
+
+
+
+
+
+
+    LayoutBuilder(
+    builder: (context, constraints) {
+      return Card(
+        margin: const EdgeInsets.symmetric(
+          horizontal: 17,
+          vertical: 5,
+        ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              20,
+            ),
+          ),
+        ),
+        elevation: 5,
+        color: Colors.white,
+        child: ListView.builder(
+            itemCount: isVisible ? _todos.length : _todos
+                .where((element) => !element.done)
+                .toList()
+                .length,
+            itemBuilder: (context, index) {
+              final filteredTodos = isVisible ? _todos : _todos.where((
+                  element) => !element.done).toList();
+              return Dismissible(
+                  background: Container(
+                    color: Colors.green,
+                    child: const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Icon(Icons.check),
                     ),
                   ),
-                  elevation: 5,
-                  color: Colors.white,
-                  child: ListView.builder(
-                      itemCount: isVisible ? _todos.length : _todos.where((element) => !element.done).toList().length,
-                      itemBuilder: (context, index) {
-                        final filteredTodos = isVisible ? _todos : _todos.where((element) => !element.done).toList();
-                        return Dismissible(
-                            background: Container(
-                            color: Colors.green,
-                              child: const Align(
-                                alignment: Alignment.centerLeft,
-                                child: Icon(Icons.check),
-                              ),
-                            ),
-                            secondaryBackground: Container(
-                              color: Colors.red,
-                              child: const Align(
-                                alignment: Alignment.centerRight,
-                                child: Icon(Icons.delete),
-                              ),
-                            ),
-                            key: ValueKey<TodoModel>(filteredTodos[index]),
-                            onDismissed: (DismissDirection direction){
-                                setState(() {
-                                  _todos.removeAt(_todos.indexOf(filteredTodos[index]));
-                                });
-                            },
-                            child: CheckboxListTile(
-                              title: GestureDetector(
-                                onTap: () {
-                                  _editTodo(context, filteredTodos[index]);
-                                },
-                                child: filteredTodos[index].deadline == null
-                                    ? Text(filteredTodos[index].text,
-                                  //style: themeData.textTheme.bodyLarge?.copyWith(),
-                                  style: TextStyle(
-                                    decoration: filteredTodos[index].done ? TextDecoration.lineThrough : null,
-                                    color: filteredTodos[index].done ? Colors.grey : Colors.black,
-                                  ),
-                                )
-                                    : Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(filteredTodos[index].text,
-                                  style: TextStyle(
-                                    decoration: filteredTodos[index].done ? TextDecoration.lineThrough : null,
-                                    color: filteredTodos[index].done ? Colors.grey : Colors.black,
-                                  ),
-                                    ),
-                                    Text('${filteredTodos[index].deadline!.day}.${filteredTodos[index].deadline!.month}.${filteredTodos[index].deadline!.year}',
-                                      style: TextStyle(
-                                        decoration: filteredTodos[index].done ? TextDecoration.lineThrough : null,
-                                        color: filteredTodos[index].done ? Colors.grey : Colors.black,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ),
-                          controlAffinity: ListTileControlAffinity.leading,
-                          value: filteredTodos[index].done,
-                          onChanged: (value) {
-                            final checked = value ?? false;
-                            setState(() {
-                              _todos[_todos.indexOf(filteredTodos[index])] = filteredTodos[index].copyWith(
-                                done: checked,
-                              );
-                            });
-                          },
-                        )
-                        );
-                      }
+                  secondaryBackground: Container(
+                    color: Colors.red,
+                    child: const Align(
+                      alignment: Alignment.centerRight,
+                      child: Icon(Icons.delete),
+                    ),
                   ),
-                ),
-              ),
+                  key: ValueKey<TodoModel>(filteredTodos[index]),
+                  onDismissed: (DismissDirection direction) {
+                    setState(() {
+                      _todos.removeAt(_todos.indexOf(filteredTodos[index]));
+                    });
+                  },
+                  child: CheckboxListTile(
+                    title: GestureDetector(
+                        onTap: () {
+                          _editTodo(context, filteredTodos[index]);
+                        },
+                        child: filteredTodos[index].deadline == null
+                            ? Text(filteredTodos[index].text,
+                          //style: themeData.textTheme.bodyLarge?.copyWith(),
+                          style: TextStyle(
+                            decoration: filteredTodos[index].done
+                                ? TextDecoration.lineThrough
+                                : null,
+                            color: filteredTodos[index].done
+                                ? Colors.grey
+                                : Colors.black,
+                          ),
+                        )
+                            : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(filteredTodos[index].text,
+                              style: TextStyle(
+                                decoration: filteredTodos[index].done
+                                    ? TextDecoration.lineThrough
+                                    : null,
+                                color: filteredTodos[index].done
+                                    ? Colors.grey
+                                    : Colors.black,
+                              ),
+                            ),
+                            Text('${filteredTodos[index].deadline!
+                                .day}.${filteredTodos[index].deadline!
+                                .month}.${filteredTodos[index].deadline!.year}',
+                              style: TextStyle(
+                                decoration: filteredTodos[index].done
+                                    ? TextDecoration.lineThrough
+                                    : null,
+                                color: filteredTodos[index].done
+                                    ? Colors.grey
+                                    : Colors.black,
+                              ),
+                            ),
+                          ],
+                        )
+                    ),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    value: filteredTodos[index].done,
+                    activeColor: Colors.green,
+                    onChanged: (value) {
+                      final checked = value ?? false;
+                      setState(() {
+                        _todos[_todos.indexOf(filteredTodos[index])] =
+                            filteredTodos[index].copyWith(
+                              done: checked,
+                            );
+                      });
+                    },
+                  )
+              );
+            },
+          shrinkWrap: true,
+        ),
+      );
+    }
+        ),
+
+
+
+
             ]
         ),
       ),
