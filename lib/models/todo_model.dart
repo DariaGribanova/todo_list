@@ -1,12 +1,12 @@
 class TodoModel {
   final String text;
   final DateTime? deadline;
-  final bool done;
+  final bool? done;
 
   TodoModel({
     required this.text,
     this.deadline,
-    this.done = false,
+    this.done,
   });
 
   TodoModel copyWith({

@@ -34,7 +34,7 @@ class _TodoListPageState extends State<TodoListPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Выполнено - ${_todos.where((element) => element.done).length}', style: themeData.textTheme.bodyLarge?.copyWith()),
+                  Text('Выполнено - ${_todos.where((element) => element.done!).length}', style: themeData.textTheme.bodyLarge?.copyWith(color: themeData.colorScheme.tertiary, fontWeight: FontWeight.w700)),
                   TextButton(
                     onPressed: () {
                       setState(() {
@@ -70,12 +70,12 @@ class _TodoListPageState extends State<TodoListPage> {
         color: Colors.white,
         child: ListView.builder(
             itemCount: isVisible ? _todos.length : _todos
-                .where((element) => !element.done)
+                .where((element) => !element.done!)
                 .toList()
                 .length,
             itemBuilder: (context, index) {
               final filteredTodos = isVisible ? _todos : _todos.where((
-                  element) => !element.done).toList();
+                  element) => !element.done!).toList();
               return Dismissible(
                 direction: filteredTodos[index].done == true ? DismissDirection.endToStart : DismissDirection.horizontal,
                   background: Container(
@@ -118,10 +118,10 @@ class _TodoListPageState extends State<TodoListPage> {
                             ? Text(filteredTodos[index].text,
                           //style: themeData.textTheme.bodyLarge?.copyWith(),
                           style: TextStyle(
-                            decoration: filteredTodos[index].done
+                            decoration: filteredTodos[index].done!
                                 ? TextDecoration.lineThrough
                                 : null,
-                            color: filteredTodos[index].done
+                            color: filteredTodos[index].done!
                                 ? Colors.grey
                                 : Colors.black,
                           ),
@@ -131,10 +131,10 @@ class _TodoListPageState extends State<TodoListPage> {
                           children: [
                             Text(filteredTodos[index].text,
                               style: TextStyle(
-                                decoration: filteredTodos[index].done
+                                decoration: filteredTodos[index].done!
                                     ? TextDecoration.lineThrough
                                     : null,
-                                color: filteredTodos[index].done
+                                color: filteredTodos[index].done!
                                     ? Colors.grey
                                     : Colors.black,
                               ),
@@ -143,10 +143,10 @@ class _TodoListPageState extends State<TodoListPage> {
                                 .day}.${filteredTodos[index].deadline!
                                 .month}.${filteredTodos[index].deadline!.year}',
                               style: TextStyle(
-                                decoration: filteredTodos[index].done
+                                decoration: filteredTodos[index].done!
                                     ? TextDecoration.lineThrough
                                     : null,
-                                color: filteredTodos[index].done
+                                color: filteredTodos[index].done!
                                     ? Colors.grey
                                     : Colors.black,
                               ),

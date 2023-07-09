@@ -51,9 +51,10 @@ class _AddTodo extends State<AddTodo> {
                         Navigator.pop(context, AddTodoResult(TodoModel(
                           text: myController.text ?? '',
                           deadline: dateTime,
+                          done: widget.todoModel?.done ?? false
                         ), 'save'));
                       },
-                      child: Text('СОХРАНИТЬ'),
+                      child: Text('СОХРАНИТЬ', style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Theme.of(context).colorScheme.primary)),
                     )
                   ],
                 ),
