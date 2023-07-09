@@ -206,7 +206,7 @@ class _TodoListPageState extends State<TodoListPage> {
       setState(
             () {
           _todos.add(
-            result,
+            result.todoModel,
           );
         },
       );
@@ -221,11 +221,19 @@ class _TodoListPageState extends State<TodoListPage> {
     );
     if (!mounted) return;
     if (result != null) {
-      setState(
-            () {
-              _todos[_todos.indexOf(todoModel!)] = result;
-        },
-      );
+      if (result.buttonId == 'save') {
+        setState(
+              () {
+                _todos[_todos.indexOf(todoModel!)] = result.todoModel;
+          },
+        );
+      } else if (result.buttonId == 'delete'){
+        setState(
+              () {
+            _todos.remove(todoModel);
+          },
+        );
+      }
     }
   }
 

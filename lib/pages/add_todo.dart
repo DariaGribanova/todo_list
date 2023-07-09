@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list/models/AddTodoResult.dart';
 import 'package:todo_list/models/todo_model.dart';
 
 class AddTodo extends StatefulWidget {
@@ -47,10 +48,10 @@ class _AddTodo extends State<AddTodo> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(context, TodoModel(
+                        Navigator.pop(context, AddTodoResult(TodoModel(
                           text: myController.text ?? '',
                           deadline: dateTime,
-                        ));
+                        ), 'save'));
                       },
                       child: Text('СОХРАНИТЬ'),
                     )
@@ -115,7 +116,11 @@ class _AddTodo extends State<AddTodo> {
                 widget.todoModel != null ?
                   TextButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.pop(context, AddTodoResult(TodoModel(
+                          text: myController.text ?? '',
+                          deadline: dateTime,
+                        ), 'delete'));
+                        //Navigator.pop(context);
                       },
                       child: const Row(
                         children: [
